@@ -17,7 +17,16 @@ main() async{
   HydratedBlocOverrides.runZoned(
     () => runApp(const AppRoot(),),
     storage: storage,
+    blocObserver: MyBlocObserver(),
   );
+}
+
+class MyBlocObserver extends BlocObserver{
+
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    print('we have transition: $transition');
+  }
 }
 
 class AppRoot extends StatelessWidget{
