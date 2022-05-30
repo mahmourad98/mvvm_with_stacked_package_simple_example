@@ -52,11 +52,22 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: (){
-              BlocProvider.of<UserBloc>(buildContext,).add(const LoadUserEvent(1),);
-            },
-            child: const Text('Push Me'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: (){
+                  BlocProvider.of<UserBloc>(buildContext,).add(const LoadUserEvent(2),);
+                },
+                child: const Text('Load Me'),
+              ),
+              ElevatedButton(
+                onPressed: (){
+                  BlocProvider.of<UserBloc>(buildContext,).add(const KickUserEvent(2),);
+                },
+                child: const Text('Kick Me'),
+              ),
+            ],
           ),
         ],
       ),

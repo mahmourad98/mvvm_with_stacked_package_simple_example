@@ -12,3 +12,12 @@ class LoadUserEvent extends UserEvent{
   @override
   List<Object?> get props => [userId,];
 }
+
+class KickUserEvent extends UserEvent{
+  final int userId;
+
+  const KickUserEvent(this.userId,);
+
+  @override
+  List<Object?> get props => [userId,];
+}

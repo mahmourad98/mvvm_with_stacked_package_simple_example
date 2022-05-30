@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:untitled03/user_bloc/repository/user_repository.dart';
 import 'model/user_model.dart';
@@ -11,6 +10,7 @@ class UserBloc extends HydratedBloc<UserEvent, UserState> {
   final UserRepository userRepository;
   UserBloc(this.userRepository,) : super(UserInitialState(),) {
     on<LoadUserEvent>(_onLoadUSerEvent,);
+    on<KickUserEvent>(_onKickUserEvent,);
   }
 
   _onLoadUSerEvent(LoadUserEvent event, Emitter<UserState> emit) async {
@@ -23,6 +23,17 @@ class UserBloc extends HydratedBloc<UserEvent, UserState> {
     else{
       emit(UserLoadedFailureState(),);
     }
+
+  }
+
+  _onKickUserEvent(KickUserEvent event, Emitter<UserState> emit) async {
+    emit(UserLoadingState(),);
+    await Future.delayed(
+      const Duration(seconds: 2,),
+      (){
+        HydratedBlocOverrides.current?.storage.clear();
+      }
+    ).then((_) {emit(UserInitialState(),);});
 
   }
 
