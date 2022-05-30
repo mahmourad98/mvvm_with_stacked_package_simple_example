@@ -1,40 +1,35 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:untitled03/user_bloc/repository/user_repository.dart';
-import 'package:untitled03/user_bloc/user_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'api_list/api_service.dart';
 import 'app.dart';
 
-main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  final storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-      ? HydratedStorage.webStorageDirectory
-      : await getTemporaryDirectory(),
-  );
-  HydratedBlocOverrides.runZoned(
-    () => runApp(const AppRoot(),),
-    storage: storage,
-  );
+main(){
+  AppRoot.init();
 }
 
-class AppRoot extends StatelessWidget{
-  const AppRoot({Key? key,}) : super(key: key,);
 
-  @override
-  Widget build(BuildContext context,) {
-    return MultiBlocProvider(
-      providers: <BlocProvider>[
-        BlocProvider<UserBloc>(
-          create: (_) => UserBloc(UserFakeDataRepository(),),
-        ),
-      ],
-      child: const MyApp(),
-    );
+class AppRoot{
+  static const _myApp = MyApp();
+  static final getIt = GetIt.instance;
+
+  AppRoot.init(){
+    HttpOverrides.global = MyHttpOverrides();
+    WidgetsFlutterBinding.ensureInitialized();
+    getItLocatorSetup();
+    runApp(_myApp,);
   }
 
+  void getItLocatorSetup() {
+    getIt.registerLazySingleton<ApiRepository>(() => ApiRepository(),);
+  }
 }
 
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context,){
+    return super.createHttpClient(context,)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port,)=> true;
+  }
+}
 
