@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/reactive_example/api_data_view.dart';
 import 'async_example/async_view.dart';
 import 'counter_example/counter_view.dart';
 
@@ -42,7 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               TextButton(
                 onPressed: (){
-
+                  Navigator.of(context,).push(
+                    MaterialPageRoute(
+                      builder: (_) => const ApiDataView(),
+                    ),
+                  );
                 },
                 child: const Text('To Api Page',),
               ),

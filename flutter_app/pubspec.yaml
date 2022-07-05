@@ -17,6 +17,7 @@ dependencies:
   stacked: any
   get_it: any
   rxdart: any
+  http: any
 
 
 dev_dependencies:
