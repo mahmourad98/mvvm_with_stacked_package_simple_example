@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'counter_example/counter_view.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key,}) : super(key: key);
 
@@ -20,7 +22,11 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               TextButton(
                 onPressed: (){
-
+                  Navigator.of(context,).push(
+                    MaterialPageRoute(
+                      builder: (_) => const CounterScreen(),
+                    ),
+                  );
                 },
                 child: const Text('To Counter Page',),
               ),
