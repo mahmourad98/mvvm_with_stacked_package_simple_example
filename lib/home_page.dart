@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled03/api_list/api_data_view.dart';
-import 'async/async_view.dart';
-import 'counter/counter_view.dart';
+import 'package:flutter_app/reactive_example/api_data_view.dart';
+import 'async_example/async_view.dart';
+import 'counter_example/counter_view.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key,}) : super(key: key);
@@ -25,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 onPressed: (){
                   Navigator.of(context,).push(
-                    CupertinoPageRoute(
+                    MaterialPageRoute(
                       builder: (_) => const CounterScreen(),
                     ),
                   );
@@ -35,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 onPressed: (){
                   Navigator.of(context,).push(
-                    CupertinoPageRoute(
+                    MaterialPageRoute(
                       builder: (_) => const AsyncScreen(),
                     ),
                   );
@@ -45,22 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
               TextButton(
                 onPressed: (){
                   Navigator.of(context,).push(
-                    CupertinoPageRoute(
+                    MaterialPageRoute(
                       builder: (_) => const ApiDataView(),
                     ),
                   );
                 },
                 child: const Text('To Api Page',),
-              ),
-              TextButton(
-                onPressed: (){
-                  Navigator.of(context,).push(
-                    CupertinoPageRoute(
-                      builder: (_) => const ApiDataView(),
-                    ),
-                  );
-                },
-                child: const Text('To Reusable Components Page',),
               ),
             ],
           )
