@@ -7,27 +7,25 @@ import 'package:stacked/stacked.dart';
 
 class ApiRepository with ReactiveServiceMixin{
   String apiUrl = "https://62c2d2a5876c4700f52f84f8.mockapi.io/mahmoud";
-  //List<Map<String, String>> apiResults = <Map<String, String>>[];
-  final ReactiveValue<List<Map<String, String>>> apiResults = ReactiveValue<List<Map<String, String>>>(<Map<String, String>>[]);
-  //get apiResults => _apiResults.value;
+  final ReactiveValue<Map<String, String>?> apiResult = ReactiveValue(null,);
+  Map<String, String>? get apiResultValue => apiResult.value;
   StreamSubscription? streamSubscription;
 
 
   ApiRepository(){
-    listenToReactiveValues([apiResults,],);
+    listenToReactiveValues([apiResult,],);
   }
 
   getDataFromApi(int x,){
     streamSubscription = generateStream(x,).listen(
       (dynamic value,){
-        apiResults.value.add(value as Map<String, String>,);
-        notifyListeners();
+        apiResult.value = value as Map<String, String>;
       },
     );
   }
 
   Stream<Map<String, String>> generateStream(int x,) async*{
-    if(x <= 50){
+    if(!streamSubscription!.isPaused && x <= 50){
       var response = await http.get(
         Uri.parse(apiUrl + "/" + "$x",),
       );
@@ -44,9 +42,15 @@ class ApiRepository with ReactiveServiceMixin{
       yield result;
       yield* generateStream((x + 1),);
     }
+    else{
+      dispose();
+    }
   }
 
   void dispose() async{
     await streamSubscription!.cancel();
+    apiResult.value = null;
+    log('stream was disposed');
+    return;
   }
 }

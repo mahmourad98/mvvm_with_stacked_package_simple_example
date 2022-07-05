@@ -5,18 +5,29 @@ import 'api_service.dart';
 
 
 class ApiDataViewModel extends ReactiveViewModel{
-  var apiRepository = AppRoot.getIt.get<ApiRepository>();
-  List<Map<String, String>> values = <Map<String, String>>[];
+  final apiRepository = AppRoot.getIt.get<ApiRepository>();
+  final List<Map<String, String>> values = <Map<String, String>>[];
+
+  ApiDataViewModel();
 
   void getResults(){
     log('get results is intialized',);
     apiRepository.getDataFromApi(1,);
-    values = apiRepository.apiResults.value;
+    apiRepository.apiResult.onChange.listen(
+      (event) {
+        if(event.neu != null){
+          values.add(event.neu!);
+          notifyListeners();
+        }
+      }
+    );
   }
 
   @override
   void dispose() {
     apiRepository.dispose();
+    values.clear();
+    notifyListeners();
     super.dispose();
   }
 

@@ -18,14 +18,25 @@ class ApiDataView extends ViewModelBuilderWidget{
 
   @override
   Widget builder(BuildContext context, ChangeNotifier viewModel, Widget? child) {
+    final _scrollController = ScrollController(
+      initialScrollOffset: 1.0,
+      keepScrollOffset: true,
+    );
+    const _scrollPhysics = ClampingScrollPhysics();
     return Scaffold(
       appBar: AppBar(),
-      body: ListView.separated(
+      body:  ((viewModel as ApiDataViewModel).values.isNotEmpty)
+      ? ListView.separated(
         reverse: false,
         primary: false,
         shrinkWrap: true,
-        itemCount: (viewModel as ApiDataViewModel).values.length,
+        controller: _scrollController,
+        physics: _scrollPhysics,
+        itemCount: viewModel.values.length,
         itemBuilder: (BuildContext listViewBuildContext,int listViewItemIndex,){
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            _scrollController.jumpTo(_scrollController.position.maxScrollExtent,);
+          });
           return ListTile(
             title: Text(viewModel.values[listViewItemIndex].toString(),),
           );
@@ -33,7 +44,10 @@ class ApiDataView extends ViewModelBuilderWidget{
         separatorBuilder: (BuildContext listViewBuildContext, int listViewItemIndex,){
           return const Divider(thickness: 1.0, height: 8.0, color: Colors.black,);
         },
-      ),
+      )
+      : const ListTile(
+        title: Text('No Data',),
+      )
     );
   }
 

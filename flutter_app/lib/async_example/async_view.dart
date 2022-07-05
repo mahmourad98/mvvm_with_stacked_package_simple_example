@@ -42,11 +42,9 @@ class AsyncScreenListView extends ViewModelWidget<AsyncViewModel> {
         physics: _scrollPhysics,
         itemCount: viewModel.values.length,
         itemBuilder: (BuildContext listViewBuildContext,int listViewItemIndex,){
-          if (listViewItemIndex >= 0) {
-            WidgetsBinding.instance?.addPostFrameCallback((_) {
-              _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-            });
-          }
+          WidgetsBinding.instance?.addPostFrameCallback((_) {
+            _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          });
           return ListTile(
             title: Text(viewModel.values[listViewItemIndex].toString(),),
           );
