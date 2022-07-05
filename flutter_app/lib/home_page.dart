@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'async_example/async_view.dart';
 import 'counter_example/counter_view.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -32,7 +32,11 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               TextButton(
                 onPressed: (){
-
+                  Navigator.of(context,).push(
+                    MaterialPageRoute(
+                      builder: (_) => const AsyncScreen(),
+                    ),
+                  );
                 },
                 child: const Text('To Async Page',),
               ),
